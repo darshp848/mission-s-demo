@@ -6,7 +6,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $missionRoot = $PSScriptRoot
-$missionOut = Join-Path $missionRoot 'out\revised'
+$missionOut = Join-Path $missionRoot 'out\aero_pulsed'
 New-Item -ItemType Directory -Path $missionOut -Force | Out-Null
 $missionLog = Join-Path $missionOut 'pipeline.log'
 $missionMatlabRoot = $missionRoot.Replace('\','/').Replace("'","''")
@@ -15,7 +15,7 @@ function Invoke-MissionMatlab([string]$Code) {
     if ($LASTEXITCODE -ne 0) { throw "MATLAB failed; see $missionLog" }
 }
 "Validation $(Get-Date -Format o)" | Add-Content $missionLog
-Invoke-MissionMatlab "cd('$missionMatlabRoot/simulink'); ms_validate_plant; ms_validate_allocator; build_mission_s_model;"
+Invoke-MissionMatlab "cd('$missionMatlabRoot/simulink'); ms_validate_plant; ms_validate_allocator; ms_validate_aero_pulses; build_mission_s_model;"
 "Nominal mission $(Get-Date -Format o)" | Add-Content $missionLog
 Invoke-MissionMatlab "cd('$missionMatlabRoot/simulink'); S=run_mission_s(); assert(S.success,'Nominal mission failed; inspect scene.json');"
 if (-not $SkipMonteCarlo) {
@@ -27,7 +27,7 @@ if (-not $SkipRender) {
     & $BlenderExecutable -b -P (Join-Path $missionRoot 'blender\build_scene.py') -- --csv (Join-Path $missionOut 'trajectory.csv') --scene (Join-Path $missionOut 'scene.json') --out $missionOut --render final --res 70 --samples 64 --frames_dir (Join-Path $missionOut 'frames') --save (Join-Path $missionOut 'mission_s.blend') *>> $missionLog
     if ($LASTEXITCODE -ne 0) { throw "Blender failed; see $missionLog" }
     "Telemetry video $(Get-Date -Format o)" | Add-Content $missionLog
-    Invoke-MissionMatlab "addpath('$missionMatlabRoot/matlab'); telemetry_video('$missionMatlabRoot/out/revised');"
+    Invoke-MissionMatlab "addpath('$missionMatlabRoot/matlab'); telemetry_video('$missionMatlabRoot/out/aero_pulsed');"
 }
 "Complete $(Get-Date -Format o)" | Add-Content $missionLog
 Write-Host "Results: $missionOut"

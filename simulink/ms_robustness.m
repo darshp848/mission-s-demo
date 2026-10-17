@@ -4,7 +4,7 @@ if nargin<1,N=50;end
 if nargin<2,over=struct();end
 validateattributes(N,{'numeric'},{'scalar','integer','positive'});
 here=fileparts(mfilename('fullpath'));addpath(here);
-if nargin<3,outDir=fullfile(here,'..','out','revised');end
+if nargin<3,outDir=fullfile(here,'..','out','aero_pulsed');end
 if ~exist(outDir,'dir'),mkdir(outDir);end
 [P,info]=ms_params();
 for f=fieldnames(over).',P.(f{1})=over.(f{1});end

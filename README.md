@@ -2,13 +2,28 @@
 
 The current demo uses a quaternion 6DOF Simulink plant, three-axis flight computer,
 and one geometry definition for simulation and Blender: `thruster_layout.json`.
-The white Mission S body is a reference-informed reconstruction, not manufacturer CAD. Original reference photographs are not redistributed. All current outputs are in `out/revised/`.
+The white Mission S body is a reference-informed reconstruction, not manufacturer CAD. Original reference photographs are not redistributed. Current aerodynamic/pulsed-RCS outputs are in `out/aero_pulsed/`; `out/revised/` preserves the baseline.
 
-[Watch the telemetry demo](out/revised/mission_s_telemetry.mp4)
+[Watch the updated flight](out/aero_pulsed/mission_s_telemetry.mp4) · [Pulses at 8× slow motion](out/aero_pulsed/pulse_slow_motion.mp4) · [New results and limitations](out/aero_pulsed/RESULTS.md)
 
 ![Reconstructed body](out/revised/body_review/front.png)
 
-## Results (October 16, 2026)
+## Pulsed-RCS and aerodynamic update
+
+Small jets now use fixed-thrust pulses with assumed 20 ms minimum on and 10 ms
+minimum off times. Main engines retain throttle control. Six surface panels use
+local air-relative velocity and rotational point velocity to produce drag and
+roll/pitch/yaw moments, plus offset downforce and a spatial gust field. The
+controller compensates estimated nominal loads and uses feedback for remaining
+motion. Aerodynamic coefficients and valve characteristics are assumptions,
+not measured car/hardware data; the MMH/NTO propulsion concept is unchanged.
+
+The revised nominal mission and 50/50 dispersed runs passed. The run used 209 RCS
+pulses and 82.76 kg of propellant, versus 79.14 kg for the baseline. Integration
+step sensitivity gave touchdown descent speeds of 1.66–1.82 m/s; exact landing
+predictions are not established. See the new results document for detailed tests.
+
+## Baseline results (October 16, 2026)
 
 | Check | Result |
 |---|---|
@@ -43,7 +58,7 @@ Rendering was tested with NVIDIA OPTIX. The pipeline executable paths are config
 `run_v2.ps1` forwards to the revised pipeline. It stops when a required stage fails.
 The Blender output is a PNG sequence; `matlab/telemetry_video.m` encodes the
 1920×1080, 24 fps telemetry MP4. Renderer resolution is 1344×756, 64 samples with
-denoising. The saved Blender scene is `out/revised/mission_s.blend`.
+denoising. The saved Blender scene is generated at `out/aero_pulsed/mission_s.blend`.
 
 MATLAB commands:
 
@@ -52,11 +67,12 @@ cd simulink
 build_mission_s_model  % safely open/compile the checked-in revised .slx
 ms_validate_plant
 ms_validate_allocator
+ms_validate_aero_pulses
 S = run_mission_s();   % authoritative trajectory + scene + plot
 R = ms_robustness(50); % nominal controller, dispersed truth, seed 7
 ms_debug_run(14)      % reproduce a particular dispersed run
 addpath('../matlab')
-telemetry_video('../out/revised');
+telemetry_video('../out/aero_pulsed');
 ```
 
 The checked-in `simulink/mission_s.slx` is the model source. The build entry point
@@ -69,7 +85,7 @@ are excluded to avoid embedding local workspace paths.
 Explicit rendering:
 
 ```powershell
-& 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' -b -P blender/build_scene.py -- --render final --res 70 --samples 64 --frames_dir out/revised/frames --save out/revised/mission_s.blend
+& 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' -b -P blender/build_scene.py -- --render final --res 70 --samples 64 --frames_dir out/aero_pulsed/frames --save out/aero_pulsed/mission_s.blend
 ```
 
 `--csv`, `--scene`, `--out`, `--still`, and `--frames` override defaults. The
@@ -107,7 +123,7 @@ The split outlets model shared thrust and render clearance; nozzle-flow,
 combustion, plume heating, plumbing and structural feasibility are not solved.
 Tank contents are fixed-position point masses without slosh. The chosen
 variable-mass angular model retains Idot*w but omits a separate co-rotating
-exhaust angular momentum flux model. Sensors are ideal; no wind, road roughness,
+exhaust angular momentum flux model. Sensors are ideal; no road roughness,
 structural flexibility or valve faults are dispersed. Lineup vehicles are
 approximate massing geometry. Fifty draws test the stated perturbations, not
 all possible conditions.
@@ -125,3 +141,13 @@ Rear jets provide forward-only speed trim. In the nominal maneuver, world longit
 ## Attribution
 
 Independent concept study; not affiliated with or endorsed by Porsche, SpaceX, Tesla, MathWorks or Blender. Product names remain their owners' trademarks. Reference photographs and commercial software are not included. No redistribution license is granted beyond the repository host's standard viewing and forking permissions.
+
+The new `pulse_telemetry.csv` and `aero_telemetry.csv` retain high-rate model
+commands and environmental loads. The delivered flight video includes a 1 kHz
+pulse trace and aerodynamic readouts. To reproduce those overlays with Python,
+install `requirements.txt`, put FFmpeg on PATH, then run:
+
+```powershell
+python python/telemetry.py --csv out/aero_pulsed/trajectory.csv --render_dir out/aero_pulsed/frames --out out/aero_pulsed/telemetry --mp4 out/aero_pulsed/mission_s_telemetry.mp4
+python python/pulse_closeup.py
+```

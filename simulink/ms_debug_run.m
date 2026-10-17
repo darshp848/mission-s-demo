@@ -4,7 +4,7 @@ if nargin<2,N=50;end
 [P,info]=ms_params();Qs=ms_mc_draws(P,N);
 in=Simulink.SimulationInput('mission_s');in=in.setVariable('P',P).setVariable('PP',Qs(i));validate(in);out=sim(in);
 L=ms_log_matrix(out.simlog,P);S=ms_summary(L,P,info,Qs(i));disp(S);
-od=fullfile(fileparts(mfilename('fullpath')),'..','out','revised');
+od=fullfile(fileparts(mfilename('fullpath')),'..','out','aero_pulsed');
 save(fullfile(od,sprintf('debug_run_%d.mat',i)),'L','S');
 c=ms_log_columns(P);k=find(diff(round(L(:,c.mode)))~=0);
 for j=k.'

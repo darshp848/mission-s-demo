@@ -6,7 +6,9 @@ mode=mem(1); tm=mem(2); roll_end=mem(3); pitch_ref=mem(4);
 inte=mem(5:7); ahat=mem(8:10); tstop=mem(11); tdmode=mem(12);
 Tr=mem(13); sdhat=mem(14); roll_progress=mem(15); pitch_progress=mem(16);
 [M,cg,Ixx,Iyy,Izz,I]=ms_mass_props(P,max(mprop(1),0),max(mprop(2),0));
-R=ms_rot(q); hbot=ms_hbot(P,pos,q,cg); B=ms_wrench(P,cg);
+R=ms_rot(q); estimate=P;estimate.wind_gust=P.control_wind_gust;
+[Fa,Ma]=ms_aero(estimate,pos,vel,q,rate,cg); Faw=R*Fa;
+hbot=ms_hbot(P,pos,q,cg); B=ms_wrench(P,cg);
 T_cmd=zeros(size(P.Tmax,1),1); F_drive=0; brake=0; done=0; next=mode;
 g=P.g; Ts=P.Ts; SDlo=P.SD_T*P.SD_tmin;
 if mode==0
@@ -54,15 +56,15 @@ elseif mode<=10
         accel(axis)=ar(axis)-gains(axis,:)*[inte(axis);e(axis);rate(axis)-wr(axis);ahat(axis)-ar(axis)];
     end
     if flip,inte(2)=0;accel(2)=0;end
-    moments=I*accel+cross(rate,I*rate);
+    moments=I*accel+cross(rate,I*rate)-Ma;
     % Main chambers retain independent throttle, each split into equal outlets.
     Tsd=zeros(2,1);
     if sdmode
         if mode==2
-            Fz=M*(g+P.a_boost)/max(R(3,3),.5);
+            Fz=(M*(g+P.a_boost)-Faw(3))/max(R(3,3),.5);
         else
             vzref=-max(P.v_touch,sqrt(2*P.a_burn*max(hbot,0)));
-            Fz=M*(g+P.k_vz*(vzref-vel(3)))/max(R(3,3),.3);
+            Fz=(M*(g+P.k_vz*(vzref-vel(3)))-Faw(3))/max(R(3,3),.3);
         end
         TF=(moments(2)-B(5,2)*Fz)/(B(5,1)-B(5,2));
         Tsd=[min(max(TF,SDlo),P.SD_T);min(max(Fz-TF,SDlo),P.SD_T)];
@@ -74,8 +76,7 @@ elseif mode<=10
     elseif mode==6,Tsd=[P.SD_T;0];
     elseif mode==8,Tsd=[0;P.SD_T];end
     % Match world horizontal forces while attitude has first call on authority.
-    drag=.5*P.rho*P.CdA*norm(vel)*vel;
-    world_force=[drag(1)+M*P.k_vx*(P.v_cruise-vel(1));M*ay;0];
+    world_force=[M*P.k_vx*(P.v_cruise-vel(1));M*ay;0]-Faw;
     fbody=R.'*world_force;
     if sum(Tsd)>0,fbody(3)=sum(Tsd);end
     desired=[fbody;moments];
@@ -84,7 +85,7 @@ elseif mode<=10
     rcs=ms_allocate(B(:,3:end),residual,zeros(size(P.Tmax,1)-2,1),P.Tmax(3:end),P.alloc_weights);
     T_cmd=[Tsd;rcs];
     delivered=B*T_cmd;
-    acc_est=I\(delivered(4:6)-cross(rate,I*rate));
+    acc_est=I\(delivered(4:6)+Ma-cross(rate,I*rate));
     tau=[P.DR_tau;P.DR_tau;P.DR_tau]; if sdmode,tau(2)=P.SD_tau;end
     ahat=ahat+(1-exp(-Ts./tau)).*(acc_est-ahat);
     sdhat=sdhat+(1-exp(-Ts/P.SD_tau))*(sum(Tsd)-sdhat);
@@ -129,8 +130,11 @@ else
     brake=1;
     if t-tstop>=P.t_end_hold,done=1;end
 end
+% Pulse-duration control is downstream of continuous wrench allocation.
+[pulsed,pulse_state]=ms_pulse_schedule(T_cmd(3:end),aux(10)/P.P_reg,mem(23:end),P,mode>=2 && mode<=10 && next<12);
+T_cmd(3:end)=pulsed;
 if next~=mode,tm=0;else,tm=tm+Ts;end
-mem_out=[next;tm;roll_end;pitch_ref;inte;ahat;tstop;tdmode;Tr;sdhat;roll_progress;pitch_progress;q(:);0;0];
+mem_out=[next;tm;roll_end;pitch_ref;inte;ahat;tstop;tdmode;Tr;sdhat;roll_progress;pitch_progress;q(:);0;0;pulse_state];
 end
 
 function [s,ds,dds]=min_jerk(tau)

@@ -35,7 +35,7 @@ The 22-element controller memory is:
 16 pitch progress; 17:20 previous quaternion (reserved); 21:22 reserved.
 
 `ms_log_columns` defines the telemetry indices. `ms_log_matrix` normalizes
-Simulink's width×1×samples Array representation to samples×62. Aux14 preserves
+Simulink's widthÃ—1Ã—samples Array representation to samplesÃ—62. Aux14 preserves
 legacy indices1:13, then appends Izz. Exported CSV has quaternion columns,
 display Euler angles, all28 per-channel throttle percentages and physical
 telemetry. `ms_summary` checks completion from actual rotations and terminal
@@ -46,3 +46,15 @@ orientation, not just sequencer mode entry.
 quaternion integration and inertia derivative. `ms_robustness` preserves seed7,
 plant draws and explicit failure messages; local loop margins are separately
 exported from full nonlinear outcomes.
+
+## Current aerodynamic and pulsed-RCS version
+
+Current output is ../out/aero_pulsed; ../out/revised holds the baseline. Small jets
+are binary valves after impulse-error scheduling, with assumed 20 ms minimum on
+and 10 ms minimum off. Main engines retain throttle control. Run
+ms_validate_aero_pulses alongside the existing checks. ms_aero models assumed
+all-attitude surface loads and ms_wind a spatial gust field.
+Memory is now 100 entries: the original 22, then 26 impulse credits, 26 valve
+states and 26 dwell timers. Telemetry is now 90 columns: the original 62 plus
+28 delayed commands. Environment/actuator assumptions are exported in scene.json.
+See ../out/aero_pulsed/RESULTS.md for actual outcomes and numerical sensitivity.

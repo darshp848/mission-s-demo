@@ -1,7 +1,7 @@
 function S=run_mission_s(outDir)
 %RUN_MISSION_S Simulate the revised 6DOF model and export a matching scene.
 here=fileparts(mfilename('fullpath'));addpath(here);
-if nargin<1,outDir=fullfile(here,'..','out','revised');end
+if nargin<1,outDir=fullfile(here,'..','out','aero_pulsed');end
 if ~exist(outDir,'dir'),mkdir(outDir);end
 [P,info]=ms_params();PP=P;
 in=Simulink.SimulationInput('mission_s');
@@ -11,7 +11,9 @@ L=ms_log_matrix(out.simlog,P);[S,T]=ms_summary(L,P,info,PP);S.wall_time_s=elapse
 S.lineup=struct('name',info.lineup_names.','x0',num2cell(P.lineup_x(:,1)), ...
     'x1',num2cell(P.lineup_x(:,2)),'len',num2cell(P.lineup(:,2)),'h',num2cell(P.lineup(:,3)));
 S.car=struct('L',P.L,'W',P.W,'H',P.H,'h_cg',P.h_cg0,'h_ref',P.h_ref,'wheel_r',P.wheel_r,'m',P.M0);
-S.fps=P.fps;S.source='Simulink R2026a quaternion 6DOF';
+S.pulse_aero=ms_pulse_report(L,PP,info,outDir);
+S.environment=ms_environment_config(P);
+S.fps=P.fps;S.source='Simulink R2026a quaternion 6DOF with panel aero and pulsed RCS';
 S.thruster_layout=jsondecode(fileread(fullfile(here,'..','thruster_layout.json')));
 S.provenance=struct('matlab',version,'model','simulink/mission_s.slx','generated',char(datetime('now','TimeZone','UTC')));
 writetable(T,fullfile(outDir,'trajectory.csv'));save(fullfile(outDir,'nominal.mat'),'L','P','PP','S');

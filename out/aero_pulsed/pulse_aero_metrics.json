@@ -1,0 +1,10 @@
+{
+  "total_pulses": 209,
+  "min_on_s": 0.019999999999999574,
+  "min_off_s": 0.025000000000000355,
+  "on_time_pass": true,
+  "off_time_pass": true,
+  "max_aero_force_N": 625.74285937974548,
+  "max_aero_moment_Nm": 72.965941212057217,
+  "max_air_speed_mps": 17.632461581112103
+}

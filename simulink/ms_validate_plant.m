@@ -1,9 +1,9 @@
 function report = ms_validate_plant()
 %MS_VALIDATE_PLANT Bounded math checks without model compilation or simulation.
-[P,~]=ms_params(); q0=[1;0;0;0]; mp=[P.m_f0;P.m_o0];
+[P,~]=ms_params(); P.wind_mean(:)=0;P.wind_gust(:)=0; q0=[1;0;0;0]; mp=[P.m_f0;P.m_o0];
 [a,wd,~,~,aux,qd]=ms_plant(P.pos0,zeros(3,1),q0,zeros(3,1),mp,zeros(P.n_thr,1),0,0,P);
 assert(norm(a)<1e-10 && norm(wd)<1e-10 && norm(qd)<1e-10);
-assert(numel(aux)==14 && P.n_thr==28 && numel(P.mem0)==22);
+assert(numel(aux)==14 && P.n_thr==28 && numel(P.mem0)==22+3*(P.n_thr-2));
 q=[sqrt(.5);0;0;sqrt(.5)];
 assert(norm(ms_rot(q)*[1;0;0]-[0;1;0])<1e-12);
 [~,cg,~,~,~,I,Id]=ms_mass_props(P,mp(1),mp(2),[-1;-2]);
@@ -18,7 +18,7 @@ assert(all(ms_feed(P.Tmax,-1,mp,P)==0));
 assert(all(ms_feed(P.Tmax,P.P_reg,[0;mp(2)],P)==0));
 assert(norm(ms_feed(P.Tmax,P.P_reg,mp,P)-P.Tmax)<1e-10);
 % Free rigid body conserves kinetic energy instantaneously with no depletion.
-w=[.7;-.4;.3];
+w=[.7;-.4;.3]; P.aero_cda(:)=0;P.aero_cl_area=0;
 [~,wd]=ms_plant([0;0;50],zeros(3,1),q0,w,mp,zeros(P.n_thr,1),0,0,P);
 report.energy_rate=w.'*I*wd; assert(abs(report.energy_rate)<1e-10);
 % RK4 quaternion integration spans two complete turns around an oblique axis.

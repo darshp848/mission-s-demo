@@ -4,7 +4,7 @@ function [mp4File, pngFile] = telemetry_video(outDir, varargin)
 % telemetry_video(outDir, 'Frames', [1 1], 'WriteVideo', false) writes one PNG.
 % Options: CSV, Scene, FramesDir, FPS, Frames, WriteVideo, PNGDir, MP4.
 here = fileparts(mfilename('fullpath'));
-if nargin < 1 || isempty(outDir), outDir = fullfile(here, '..', 'out', 'revised'); end
+if nargin < 1 || isempty(outDir), outDir = fullfile(here, '..', 'out', 'aero_pulsed'); end
 p = inputParser;
 addParameter(p, 'CSV', fullfile(outDir, 'trajectory.csv'));
 addParameter(p, 'Scene', fullfile(outDir, 'scene.json'));

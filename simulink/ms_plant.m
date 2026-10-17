@@ -15,8 +15,9 @@ mdot = -[tot/(1+PP.OF); tot*PP.OF/(1+PP.OF)];
 [M,cg,Ixx,Iyy,Izz,I,Idot] = ms_mass_props(PP,m_f,m_o,mdot);
 R = ms_rot(att);
 wrench = ms_wrench(PP,cg)*thrust;
-F = R*wrench(1:3)-0.5*PP.rho*PP.CdA*norm(vel)*vel;
-torque = wrench(4:6);
+[Fa,Ma]=ms_aero(PP,pos,vel,att,rate,cg);
+F=R*(wrench(1:3)+Fa);
+torque=wrench(4:6)+Ma;
 
 % Suspension carries the upright vehicle; tyres provide longitudinal force.
 defl = PP.z_free-pos(3);

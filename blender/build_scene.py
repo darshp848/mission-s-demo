@@ -906,9 +906,9 @@ def set_png_output(frames_dir):
 def main():
     args = parse_args()
     root = project_dir()
-    csv_path = Path(args["csv"] or root / "out" / "revised" / "trajectory.csv").resolve()
-    scene_path = Path(args["scene"] or root / "out" / "revised" / "scene.json").resolve()
-    out_dir = Path(args["out"] or root / "out" / "revised").resolve()
+    csv_path = Path(args["csv"] or root / "out" / "aero_pulsed" / "trajectory.csv").resolve()
+    scene_path = Path(args["scene"] or root / "out" / "aero_pulsed" / "scene.json").resolve()
+    out_dir = Path(args["out"] or root / "out" / "aero_pulsed").resolve()
     if args["save"]:
         args["save"] = str(Path(args["save"]).resolve())
     if args["frames_dir"]:

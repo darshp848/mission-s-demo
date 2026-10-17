@@ -19,7 +19,7 @@ for device in prefs.devices:
     device.use = device.type == "OPTIX"
 sc.cycles.device = "GPU"
 sc.render.image_settings.file_format = "PNG"
-sc.render.filepath = str(root / "out/revised/frames/frame_")
+sc.render.filepath = str(Path(bpy.data.filepath).resolve().parent / "frames/frame_")
 sc.render.use_overwrite = False
 print("RENDER_GPU", [(d.name, d.type) for d in devices], flush=True)
 print("FRAME_RANGE", sc.frame_start, sc.frame_end, flush=True)

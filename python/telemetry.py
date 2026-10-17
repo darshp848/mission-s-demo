@@ -40,7 +40,8 @@ def load(path):
     if not rows:
         raise ValueError("Telemetry CSV contains no data rows")
     d = {k: np.array([float(r[k]) for r in rows]) for k in rows[0] if k != "phase"}
-    d["phase"] = [r["phase"] for r in rows]
+    if "phase" in rows[0]:
+        d["phase"] = [r["phase"] for r in rows]
     return d
 
 
@@ -240,6 +241,19 @@ def main():
     fig.text(0.035, 0.275, "Porsche Mission S  |  SuperDraco / Draco thruster flight  |  simulated",
              color=DIM, fontsize=9)
 
+    # Optional high-rate diagnostics for the pulsed/aerodynamic revision.
+    data_dir = os.path.dirname(a.csv)
+    aero_path = os.path.join(data_dir, "aero_telemetry.csv")
+    pulse_path = os.path.join(data_dir, "pulse_telemetry.csv")
+    aero = load(aero_path) if os.path.isfile(aero_path) else None
+    pulse = load(pulse_path) if os.path.isfile(pulse_path) else None
+    if pulse:
+        pulse_ax = fig.add_axes([0.035, 0.325, 0.29, 0.10])
+        style(pulse_ax, "FL lift valve / delivered thrust (1 kHz log)")
+        pulse_ax.set_ylim(-0.08, 1.15)
+        valve_line, = pulse_ax.step([], [], where="post", color="#ffcc80", lw=1.2)
+        thrust_line, = pulse_ax.plot([], [], color="#81c784", lw=1.1)
+        pulse_ax.tick_params(labelsize=6)
     for f in range(lo_f, hi_f + 1):
         i = f - 1
         if a.render_dir:
@@ -264,6 +278,17 @@ def main():
                          f"engine   {d['rpm'][i]:7.0f} rpm  gear {gear if gear else '-'}\n"
                          f"MMH/NTO  {d['fuel_pct'][i]:5.1f} / {d['ox_pct'][i]:5.1f} %\n"
                          f"COPV     {d['copv_bar'][i]:6.1f} bar   tank {d['tank_bar'][i]:4.1f} bar")
+        if pulse:
+            start = max(0, t[i] - 0.4)
+            mask = (pulse["t"] >= start) & (pulse["t"] <= t[i])
+            valve_line.set_data(pulse["t"][mask], pulse["valve_FL_lift"][mask])
+            thrust_line.set_data(pulse["t"][mask], pulse["delivered_FL_lift"][mask])
+            pulse_ax.set_xlim(start, max(start + .4, t[i]))
+        if aero:
+            k = min(len(aero["t"]) - 1, np.searchsorted(aero["t"], t[i]))
+            force = np.linalg.norm([aero[n][k] for n in ("Fx", "Fy", "Fz")])
+            torque = np.linalg.norm([aero[n][k] for n in ("Mx", "My", "Mz")])
+            readout.set_text(readout.get_text() + f"\naero     {force:6.1f} N   {torque:5.1f} Nm\nRCS      fixed thrust / pulse duration")
         fig.savefig(os.path.join(a.out, f"tele_{f:04d}.png"), dpi=100, facecolor=BG)
         if f % 50 == 0:
             print(f"frame {f}/{n}")

@@ -1,0 +1,1213 @@
+{
+  "roll_rotation_deg": -359.3727511312738,
+  "pitch_rotation_deg": 360.53084072595203,
+  "roll_done": true,
+  "flip_done": true,
+  "min_clearance_m": 5.126664473486734,
+  "min_clearance_over": "Model 3",
+  "min_ground_clearance_m": 0.09957831211119206,
+  "max_lateral_drift_m": 2.0298468025061256,
+  "events_s": {
+    "launch": 1.01,
+    "liftoff": 3.415,
+    "roll": 4.9350000000000005,
+    "pitch_kick": 6.93,
+    "landing_burn": 9.155,
+    "max_z_cg": 19.420732487612508,
+    "apex": 6.404,
+    "touchdown": 10.415000000000001,
+    "touchdown_vz": -1.8158396078847605,
+    "touchdown_y": 1.9993687031365328,
+    "touchdown_roll_err_deg": 0.2510804033696805,
+    "touchdown_pitch_err_deg": 0.3078613211357268,
+    "touchdown_yaw_err_deg": 0.08889323836936568,
+    "touchdown_tilt_deg": 0.39726484278430046,
+    "touchdown_mode": "landing_burn",
+    "stopped": 11.790000000000001,
+    "stop_x": 116.90675159111272
+  },
+  "prop_used_kg": {
+    "SuperDraco": 62.59225222570396,
+    "Draco": 20.171902511352055
+  },
+  "prop_loaded_kg": 140,
+  "prop_remaining_kg": 57.23584526294429,
+  "copv_bar_end": 255.4518624668774,
+  "mass_kg": {
+    "launch": 2035,
+    "end": 1952.2358452629444
+  },
+  "crashed": false,
+  "finite_states": true,
+  "max_quaternion_norm_error": 2.2246648967438887e-12,
+  "lineup_cleared": true,
+  "safe_landing": true,
+  "success": true,
+  "wall_time_s": 0.8339266,
+  "lineup": [
+    {
+      "name": "Model 3",
+      "x0": 40,
+      "x1": 41.85,
+      "len": 4.72,
+      "h": 1.44
+    },
+    {
+      "name": "Cybercab",
+      "x0": 43.050000000000004,
+      "x1": 45.00000000000001,
+      "len": 4,
+      "h": 1.45
+    },
+    {
+      "name": "Semi",
+      "x0": 46.20000000000001,
+      "x1": 48.80000000000001,
+      "len": 7,
+      "h": 4.1
+    },
+    {
+      "name": "Cybertruck",
+      "x0": 50.000000000000014,
+      "x1": 52.20000000000002,
+      "len": 5.68,
+      "h": 1.9
+    },
+    {
+      "name": "Model Y",
+      "x0": 53.40000000000002,
+      "x1": 55.32000000000002,
+      "len": 4.75,
+      "h": 1.62
+    }
+  ],
+  "car": {
+    "L": 4.61,
+    "W": 2,
+    "H": 1.16,
+    "h_cg": 0.5290459413100923,
+    "h_ref": 0.55,
+    "wheel_r": 0.335,
+    "m": 2035
+  },
+  "pulse_aero": {
+    "total_pulses": 209,
+    "min_on_s": 0.019999999999999574,
+    "min_off_s": 0.025000000000000355,
+    "on_time_pass": true,
+    "off_time_pass": true,
+    "max_aero_force_N": 625.7428593797455,
+    "max_aero_moment_Nm": 72.96594121205722,
+    "max_air_speed_mps": 17.632461581112103
+  },
+  "fps": 24,
+  "source": "Simulink R2026a quaternion 6DOF with panel aero and pulsed RCS",
+  "thruster_layout": {
+    "schema_version": 1,
+    "frame": "right-handed x forward, y left, z up; positions relative to vehicle reference",
+    "angle_convention": "direction is force on vehicle; exhaust is opposite",
+    "source": "Reconstructed concept layout from user screenshots; dimensions, counterjet ports and rear cant are engineering assumptions, not certified hardware",
+    "assumptions": [
+      "Each 71kN SuperDraco chamber feeds two equal 35.5kN outlets at common throttle; no thermochemical nozzle redesign is modeled.",
+      "Four corner clusters each have independent lift and counterjet ports at 3.9kN per active direction, inherited lift/push functionality retained for signed attitude control.",
+      "Corner force is canted 15 degrees inward (exhaust outboard); side exhaust points outward and 20 degrees down; rear exhaust is 5 degrees outward.",
+      "Nozzle position marks exit face; nozzle structure extends inward only.",
+      "Rear corner exit x=-1.90m clears rear tyre envelope; x=-1.70m was rejected during visual geometry audit.",
+      "Rear corner y=+/-0.64m follows tapered rear valance at x=-1.90m; wider placement floated beyond body skin."
+    ],
+    "channels": [
+      {
+        "name": "SD_F",
+        "position_m": [
+          1.2,
+          0,
+          -0.34
+        ],
+        "force_direction": [
+          0,
+          0,
+          1
+        ],
+        "max_thrust_N": 71000,
+        "Isp_s": 235,
+        "lag_s": 0.08,
+        "kind": "superdraco"
+      },
+      {
+        "name": "SD_R",
+        "position_m": [
+          -1.3,
+          0,
+          -0.34
+        ],
+        "force_direction": [
+          0,
+          0,
+          1
+        ],
+        "max_thrust_N": 71000,
+        "Isp_s": 235,
+        "lag_s": 0.08,
+        "kind": "superdraco"
+      },
+      {
+        "name": "FL_lift",
+        "position_m": [
+          1.7,
+          0.84,
+          -0.3
+        ],
+        "force_direction": [
+          0,
+          -0.25881904510252074,
+          0.9659258262890683
+        ],
+        "max_thrust_N": 3900,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "corner"
+      },
+      {
+        "name": "FL_push",
+        "position_m": [
+          1.7,
+          0.84,
+          -0.13
+        ],
+        "force_direction": [
+          0,
+          -0.25881904510252074,
+          -0.9659258262890683
+        ],
+        "max_thrust_N": 3900,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "corner"
+      },
+      {
+        "name": "FR_lift",
+        "position_m": [
+          1.7,
+          -0.84,
+          -0.3
+        ],
+        "force_direction": [
+          0,
+          0.25881904510252074,
+          0.9659258262890683
+        ],
+        "max_thrust_N": 3900,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "corner"
+      },
+      {
+        "name": "FR_push",
+        "position_m": [
+          1.7,
+          -0.84,
+          -0.13
+        ],
+        "force_direction": [
+          0,
+          0.25881904510252074,
+          -0.9659258262890683
+        ],
+        "max_thrust_N": 3900,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "corner"
+      },
+      {
+        "name": "BL_lift",
+        "position_m": [
+          -1.9,
+          0.64,
+          -0.3
+        ],
+        "force_direction": [
+          0,
+          -0.25881904510252074,
+          0.9659258262890683
+        ],
+        "max_thrust_N": 3900,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "corner"
+      },
+      {
+        "name": "BL_push",
+        "position_m": [
+          -1.9,
+          0.64,
+          -0.13
+        ],
+        "force_direction": [
+          0,
+          -0.25881904510252074,
+          -0.9659258262890683
+        ],
+        "max_thrust_N": 3900,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "corner"
+      },
+      {
+        "name": "BR_lift",
+        "position_m": [
+          -1.9,
+          -0.64,
+          -0.3
+        ],
+        "force_direction": [
+          0,
+          0.25881904510252074,
+          0.9659258262890683
+        ],
+        "max_thrust_N": 3900,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "corner"
+      },
+      {
+        "name": "BR_push",
+        "position_m": [
+          -1.9,
+          -0.64,
+          -0.13
+        ],
+        "force_direction": [
+          0,
+          0.25881904510252074,
+          -0.9659258262890683
+        ],
+        "max_thrust_N": 3900,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "corner"
+      },
+      {
+        "name": "S_L01",
+        "position_m": [
+          -0.85,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_L02",
+        "position_m": [
+          -0.6071428571428571,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_L03",
+        "position_m": [
+          -0.36428571428571427,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_L04",
+        "position_m": [
+          -0.12142857142857144,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_L05",
+        "position_m": [
+          0.12142857142857144,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_L06",
+        "position_m": [
+          0.3642857142857142,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_L07",
+        "position_m": [
+          0.6071428571428571,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_L08",
+        "position_m": [
+          0.85,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_R01",
+        "position_m": [
+          -0.85,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_R02",
+        "position_m": [
+          -0.6071428571428571,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_R03",
+        "position_m": [
+          -0.36428571428571427,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_R04",
+        "position_m": [
+          -0.12142857142857144,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_R05",
+        "position_m": [
+          0.12142857142857144,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_R06",
+        "position_m": [
+          0.3642857142857142,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_R07",
+        "position_m": [
+          0.6071428571428571,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "S_R08",
+        "position_m": [
+          0.85,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "side"
+      },
+      {
+        "name": "Rear_L",
+        "position_m": [
+          -2.08,
+          0.52,
+          -0.14
+        ],
+        "force_direction": [
+          0.9961946980917455,
+          -0.08715574274765817,
+          0
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "rear"
+      },
+      {
+        "name": "Rear_R",
+        "position_m": [
+          -2.08,
+          -0.52,
+          -0.14
+        ],
+        "force_direction": [
+          0.9961946980917455,
+          0.08715574274765817,
+          0
+        ],
+        "max_thrust_N": 400,
+        "Isp_s": 220,
+        "lag_s": 0.03,
+        "kind": "rear"
+      }
+    ],
+    "outlets": [
+      {
+        "name": "SD_F_R",
+        "channel": 0,
+        "position_m": [
+          1.2,
+          -0.15,
+          -0.34
+        ],
+        "force_direction": [
+          0,
+          0,
+          1
+        ],
+        "thrust_fraction": 0.5,
+        "radius_m": 0.105,
+        "depth_m": 0.09
+      },
+      {
+        "name": "SD_F_L",
+        "channel": 0,
+        "position_m": [
+          1.2,
+          0.15,
+          -0.34
+        ],
+        "force_direction": [
+          0,
+          0,
+          1
+        ],
+        "thrust_fraction": 0.5,
+        "radius_m": 0.105,
+        "depth_m": 0.09
+      },
+      {
+        "name": "SD_R_R",
+        "channel": 1,
+        "position_m": [
+          -1.3,
+          -0.15,
+          -0.34
+        ],
+        "force_direction": [
+          0,
+          0,
+          1
+        ],
+        "thrust_fraction": 0.5,
+        "radius_m": 0.105,
+        "depth_m": 0.09
+      },
+      {
+        "name": "SD_R_L",
+        "channel": 1,
+        "position_m": [
+          -1.3,
+          0.15,
+          -0.34
+        ],
+        "force_direction": [
+          0,
+          0,
+          1
+        ],
+        "thrust_fraction": 0.5,
+        "radius_m": 0.105,
+        "depth_m": 0.09
+      },
+      {
+        "name": "FL_lift",
+        "channel": 2,
+        "position_m": [
+          1.7,
+          0.84,
+          -0.3
+        ],
+        "force_direction": [
+          0,
+          -0.25881904510252074,
+          0.9659258262890683
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.055,
+        "depth_m": 0.055
+      },
+      {
+        "name": "FL_push",
+        "channel": 3,
+        "position_m": [
+          1.7,
+          0.84,
+          -0.13
+        ],
+        "force_direction": [
+          0,
+          -0.25881904510252074,
+          -0.9659258262890683
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.055,
+        "depth_m": 0.055
+      },
+      {
+        "name": "FR_lift",
+        "channel": 4,
+        "position_m": [
+          1.7,
+          -0.84,
+          -0.3
+        ],
+        "force_direction": [
+          0,
+          0.25881904510252074,
+          0.9659258262890683
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.055,
+        "depth_m": 0.055
+      },
+      {
+        "name": "FR_push",
+        "channel": 5,
+        "position_m": [
+          1.7,
+          -0.84,
+          -0.13
+        ],
+        "force_direction": [
+          0,
+          0.25881904510252074,
+          -0.9659258262890683
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.055,
+        "depth_m": 0.055
+      },
+      {
+        "name": "BL_lift",
+        "channel": 6,
+        "position_m": [
+          -1.9,
+          0.64,
+          -0.3
+        ],
+        "force_direction": [
+          0,
+          -0.25881904510252074,
+          0.9659258262890683
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.055,
+        "depth_m": 0.055
+      },
+      {
+        "name": "BL_push",
+        "channel": 7,
+        "position_m": [
+          -1.9,
+          0.64,
+          -0.13
+        ],
+        "force_direction": [
+          0,
+          -0.25881904510252074,
+          -0.9659258262890683
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.055,
+        "depth_m": 0.055
+      },
+      {
+        "name": "BR_lift",
+        "channel": 8,
+        "position_m": [
+          -1.9,
+          -0.64,
+          -0.3
+        ],
+        "force_direction": [
+          0,
+          0.25881904510252074,
+          0.9659258262890683
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.055,
+        "depth_m": 0.055
+      },
+      {
+        "name": "BR_push",
+        "channel": 9,
+        "position_m": [
+          -1.9,
+          -0.64,
+          -0.13
+        ],
+        "force_direction": [
+          0,
+          0.25881904510252074,
+          -0.9659258262890683
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.055,
+        "depth_m": 0.055
+      },
+      {
+        "name": "S_L01",
+        "channel": 10,
+        "position_m": [
+          -0.85,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_L02",
+        "channel": 11,
+        "position_m": [
+          -0.6071428571428571,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_L03",
+        "channel": 12,
+        "position_m": [
+          -0.36428571428571427,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_L04",
+        "channel": 13,
+        "position_m": [
+          -0.12142857142857144,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_L05",
+        "channel": 14,
+        "position_m": [
+          0.12142857142857144,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_L06",
+        "channel": 15,
+        "position_m": [
+          0.3642857142857142,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_L07",
+        "channel": 16,
+        "position_m": [
+          0.6071428571428571,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_L08",
+        "channel": 17,
+        "position_m": [
+          0.85,
+          0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          -0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_R01",
+        "channel": 18,
+        "position_m": [
+          -0.85,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_R02",
+        "channel": 19,
+        "position_m": [
+          -0.6071428571428571,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_R03",
+        "channel": 20,
+        "position_m": [
+          -0.36428571428571427,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_R04",
+        "channel": 21,
+        "position_m": [
+          -0.12142857142857144,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_R05",
+        "channel": 22,
+        "position_m": [
+          0.12142857142857144,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_R06",
+        "channel": 23,
+        "position_m": [
+          0.3642857142857142,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_R07",
+        "channel": 24,
+        "position_m": [
+          0.6071428571428571,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "S_R08",
+        "channel": 25,
+        "position_m": [
+          0.85,
+          -0.89,
+          -0.25
+        ],
+        "force_direction": [
+          0,
+          0.9396926207859084,
+          0.3420201433256687
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.025,
+        "depth_m": 0.035
+      },
+      {
+        "name": "Rear_L",
+        "channel": 26,
+        "position_m": [
+          -2.08,
+          0.52,
+          -0.14
+        ],
+        "force_direction": [
+          0.9961946980917455,
+          -0.08715574274765817,
+          0
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.035,
+        "depth_m": 0.045
+      },
+      {
+        "name": "Rear_R",
+        "channel": 27,
+        "position_m": [
+          -2.08,
+          -0.52,
+          -0.14
+        ],
+        "force_direction": [
+          0.9961946980917455,
+          0.08715574274765817,
+          0
+        ],
+        "thrust_fraction": 1,
+        "radius_m": 0.035,
+        "depth_m": 0.045
+      }
+    ]
+  },
+  "provenance": {
+    "matlab_release": "R2026a Update 5",
+    "model": "simulink/mission_s.slx",
+    "source": "Pulsed RCS and estimated panel aerodynamics; Monte Carlo seed 7"
+  },
+  "environment": {
+    "type": "assumed all-attitude windward-panel surrogate, not CFD",
+    "panel_positions_m": [
+      [
+        1.6135,
+        0,
+        0.02
+      ],
+      [
+        -1.6135,
+        0,
+        -0.02
+      ],
+      [
+        0,
+        0.7,
+        0.06
+      ],
+      [
+        0,
+        -0.7,
+        0.06
+      ],
+      [
+        0.1,
+        0,
+        0.40599999999999997
+      ],
+      [
+        -0.1,
+        0,
+        -0.40599999999999997
+      ]
+    ],
+    "panel_normals": [
+      [
+        1,
+        0,
+        0
+      ],
+      [
+        -1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        -1,
+        0
+      ],
+      [
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        -1
+      ]
+    ],
+    "effective_drag_area_m2": [
+      0.75,
+      1,
+      3.8,
+      3.8,
+      6.2,
+      7
+    ],
+    "downforce_area_m2": 1,
+    "downforce_center_m": [
+      -0.25,
+      0,
+      -0.05
+    ],
+    "mean_wind_world_mps": [
+      0,
+      1.5,
+      0
+    ],
+    "gust_amplitudes_mps": [
+      0.6,
+      0.8,
+      0.2
+    ],
+    "gust_wavelength_m": 35,
+    "minimum_valve_on_s": 0.02,
+    "minimum_valve_off_s": 0.01,
+    "command_latency_s": 0.005,
+    "assumed_rcs_thrust_lag_s": 0.03,
+    "propellant": "MMH/NTO, unchanged",
+    "plant_step_s": 0.001,
+    "controller_step_s": 0.005
+  }
+}

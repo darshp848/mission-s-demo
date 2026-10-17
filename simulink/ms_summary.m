@@ -69,5 +69,8 @@ T=table(t(idx),pos(idx,1),pos(idx,2),pos(idx,3),angles(idx,1),angles(idx,2),angl
     'VariableNames',{'t','x','y','z','roll','pitch','yaw','wheel_angle','speed','thrust_vert_N','thrust_diff_N', ...
     'phase','g_x','g_y','g_z','g_total','fuel_pct','ox_pct','copv_bar','tank_bar','cg_x','cg_y','cg_z','mass_kg','rpm','gear','F_drive_N'});
 T.q_w=quat(idx,1);T.q_x=quat(idx,2);T.q_y=quat(idx,3);T.q_z=quat(idx,4);
-for k=1:P.n_thr,T.(['thr_' info.groups{k}])=100*thrust(idx,k)/P.Tmax(k);end
+for k=1:P.n_thr
+    T.(['thr_' info.groups{k}])=100*thrust(idx,k)/P.Tmax(k);
+    T.(['valve_' info.groups{k}])=L(idx,c.command(k))/P.Tmax(k);
+end
 end

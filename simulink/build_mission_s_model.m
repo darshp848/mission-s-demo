@@ -1,6 +1,7 @@
 function build_mission_s_model()
 %BUILD_MISSION_S_MODEL Open and compile the checked-in revised model safely.
-% Structural model source is mission_s.slx. This entry point preserves it.
+% Structural model source is mission_s.slx. This entry point intentionally
+% preserves the checked-in model without rebuilding it.
 here=fileparts(mfilename('fullpath'));addpath(here);f=fullfile(here,'mission_s.slx');
 assert(isfile(f),'MissionS:MissingModel','Restore the revised mission_s.slx before running.');
 [P,~]=ms_params();open_system(f);

@@ -8,6 +8,14 @@ P.g = 9.81;
 % ---- Base car (918 Spyder proxy; Mission S figures unpublished)
 P.m_car = 1675; P.L = 4.61; P.W = 2.00; P.H = 1.16;
 P.h_ref = 0.55; P.wheel_r = 0.335; P.CdA = 0.75; P.rho = 1.225; P.mu = 1.15;
+% ---- All-attitude aerodynamic panel surrogate (assumed, not measured CFD)
+P.aero_pos=[.35*P.L 0 .02;-.35*P.L 0 -.02;0 .35*P.W .06;0 -.35*P.W .06;.10 0 .35*P.H;-.10 0 -.35*P.H];
+P.aero_normal=[1 0 0;-1 0 0;0 1 0;0 -1 0;0 0 1;0 0 -1];
+P.aero_cda=[.75;1.0;3.8;3.8;6.2;7.0]; % effective Cd*area m^2 per exposed panel
+P.aero_cl_area=1.0;P.aero_lift_pos=[-.25;0;-.05];
+P.wind_mean=[0;1.5;0];P.wind_gust=[.6;.8;.2];P.wind_wavelength=35;
+P.control_wind_gust=zeros(3,1); % controller estimates mean wind only
+P.pulse_min_on=.020;P.pulse_min_off=.010;P.pulse_credit_max=.1;
 % ---- Powertrain
 P.eng_rpm = [1000 3000 5000 6700 8700 9150];
 P.eng_Nm  = [280 420 500 540 491 450];
@@ -94,8 +102,9 @@ P.k_gnd = 3e5; P.zeta_gnd = 0.6; P.w_att_gnd = 12; P.c_lat = 20;
 P.cg_car_off = [0 0 0]; P.I_scale = [1 1 1]; P.thr_scale = ones(P.n_thr, 1);
 % ---- Derived
 P = ms_derive(P);
-P.mem0 = zeros(22, 1);
+P.mem0 = zeros(22+3*(P.n_thr-2), 1);
 P.mem0(11:13) = [-1; -1; P.T_roll]; P.mem0(17) = 1;
+P.mem0(22+2*(P.n_thr-2)+(1:P.n_thr-2))=P.pulse_min_off;
 P.trac_v = 0:0.1:45;
 P.trac_F = arrayfun(@(v) ms_tractive(P, v), P.trac_v);
 
